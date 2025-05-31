@@ -116,7 +116,7 @@ def chat():
         conn = sqlite3.connect("sympai.db")
         cursor = conn.cursor()
         cursor.execute("""
-            INSERT INTO chat_history (timestamp, user_input, sympai_response)
+            INSERT INTO chat_history (timestamp, user_message, sympai_response)
             VALUES (?, ?, ?)
         """, (datetime.now().isoformat(), user_input, response_text))
         chat_id = cursor.lastrowid

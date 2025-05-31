@@ -1,31 +1,35 @@
 import sqlite3
 
-conn = sqlite3.connect("sympai.db")
-cursor = conn.cursor()
+# Connect to the SQLite database (creates file if it doesn't exist)
+conn = sqlite3.connect('sympai.db')
+c = conn.cursor()
 
-# 💣 Drop old tables if they exist
-cursor.execute('DROP TABLE IF EXISTS chat_history')
-cursor.execute('DROP TABLE IF EXISTS feedback')
+# Drop tables if they exist (optional for dev reset — remove in prod)
+c.execute("DROP TABLE IF EXISTS feedback")
+c.execute("DROP TABLE IF EXISTS chat_history")
 
-# 🧱 Recreate with correct schema
-cursor.execute('''
+# Create chat history table
+c.execute('''
 CREATE TABLE chat_history (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_input TEXT,
-    sympai_response TEXT,
+    user_message TEXT NOT NULL,
+    sympai_response TEXT NOT NULL,
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
 )
 ''')
 
-cursor.execute('''
+# Create feedback table with link to chat_history
+c.execute('''
 CREATE TABLE feedback (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    message_id INTEGER,
-    feedback TEXT,
-    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+    chat_id INTEGER,
+    feedback TEXT NOT NULL,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (chat_id) REFERENCES chat_history(id)
 )
 ''')
 
 conn.commit()
 conn.close()
-print("✅ Fresh database created with correct schema.")
+
+print("✅ Database and tables created successfully.")

@@ -15,7 +15,7 @@
     }
 
     header {
-      background-color: #e3f2fd; /* ✅ Light blue background */
+      background-color: #e3f2fd;
       padding: 10px 20px;
       border-radius: 10px;
       margin-bottom: 20px;
@@ -52,21 +52,8 @@
     .avatar {
       width: 32px;
       height: 32px;
-      border-radius: 50%;
-      background-color: #ccc;
-      text-align: center;
-      line-height: 32px;
-      font-weight: bold;
-      color: white;
       margin-right: 10px;
-    }
-
-    .user .avatar {
-      background-color: #00796b;
-    }
-
-    .bot .avatar {
-      background-color: #3949ab;
+      font-size: 28px;
     }
 
     .text {
@@ -74,12 +61,17 @@
       padding: 10px;
       border-radius: 8px;
       max-width: 80%;
-      white-space: pre-wrap; /* ✅ Format GPT text properly */
+      white-space: pre-wrap;
     }
 
     .user .text {
       background-color: #e0f7fa;
       margin-left: auto;
+    }
+
+    .user .avatar {
+      margin-left: 10px;
+      margin-right: 0;
     }
 
     form {
@@ -157,6 +149,7 @@
     const userInput = document.getElementById('user-input');
     const spinner = document.getElementById('spinner');
     const feedbackForm = document.getElementById('feedback-form');
+    let typingMessage = null;
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -167,6 +160,9 @@
       userInput.value = '';
       spinner.style.display = 'inline';
 
+      // Add typing indicator
+      typingMessage = appendMessage('bot', 'SympAI is typing...');
+
       try {
         const res = await fetch('/chat', {
           method: 'POST',
@@ -174,12 +170,16 @@
           body: JSON.stringify({ message: input })
         });
         const data = await res.json();
-        appendMessage('bot', data.response);
+
+        // Replace typing message with real response
+        typingMessage.querySelector('.text').textContent = data.response;
+
         feedbackForm.style.display = 'block';
       } catch (err) {
-        appendMessage('bot', 'An error occurred. Please try again.');
+        typingMessage.querySelector('.text').textContent = 'An error occurred. Please try again.';
       } finally {
         spinner.style.display = 'none';
+        typingMessage = null;
       }
     });
 
@@ -189,16 +189,18 @@
 
       const avatar = document.createElement('div');
       avatar.className = 'avatar';
-      avatar.textContent = sender === 'user' ? 'U' : 'S';
+      avatar.textContent = sender === 'user' ? '🧑' : '🤖';
 
       const messageText = document.createElement('div');
       messageText.className = 'text';
       messageText.textContent = text;
 
-      messageDiv.appendChild(avatar);
-      messageDiv.appendChild(messageText);
+      messageDiv.appendChild(sender === 'user' ? messageText : avatar);
+      messageDiv.appendChild(sender === 'user' ? avatar : messageText);
+
       chat.appendChild(messageDiv);
       chat.scrollTop = chat.scrollHeight;
+      return messageDiv;
     }
 
     function sendFeedback(type) {

@@ -268,11 +268,9 @@ function selectSymptom(symptom) {
     }
 
     function clearChat() {
-      if (confirm('Clear all chat messages?')) {
-        chat.innerHTML = '';
-        localStorage.removeItem("chatHistory");
-        messages = [];
-      }
+      chat.innerHTML = '';
+      localStorage.removeItem("chatHistory");
+      messages = [];
     }
 
     function exportChat() {
@@ -308,7 +306,6 @@ function selectSymptom(symptom) {
 }
 
 </script>
-
 <div class="disclaimer" style="margin-top: 20px; font-size: 12px; color: gray; text-align: center;">
 <strong>Disclaimer:</strong> SympAI is an AI-powered tool designed to provide general health symptom guidance. It does not provide medical diagnoses, treatment plans, or emergency advice. Always consult a licensed healthcare provider for any medical concerns. In case of emergency, call 911 or seek immediate medical attention.
 </div>

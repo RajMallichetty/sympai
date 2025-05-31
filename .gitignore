@@ -1,0 +1,19 @@
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+evolvai_env/
+
+# Local database
+sympai.db
+
+# Environment variables
+.env
+.env.render
+
+# System files
+.DS_Store
+.vscode/

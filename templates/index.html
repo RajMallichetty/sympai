@@ -140,7 +140,27 @@ function selectSymptom(symptom) {
       justify-content: space-between;
       flex-wrap: wrap;
     }
-  </style>
+  
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    body {
+      max-width: none;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #chat {
+      flex: 1;
+      height: auto !important;
+    }
+    </style>
 </head>
 <body>
 <header>
@@ -148,19 +168,12 @@ function selectSymptom(symptom) {
 <p id="subtitle">EvolvAI Symptom Checker – your AI companion for symptom-based health guidance</p>
 </header>
 <div id="chat"></div>
-<div class="chip-buttons" style="display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin: 10px 0;">
-<button class="chip-button" onclick="selectSymptom('🧠 Headache')" style="background-color:#005f73; color:white; border:none; border-radius:16px; padding:6px 12px; cursor:pointer;">🧠 Headache</button>
-<button class="chip-button" onclick="selectSymptom('🌡️ Fever')" style="background-color:#9b2226; color:white; border:none; border-radius:16px; padding:6px 12px; cursor:pointer;">🌡️ Fever</button>
-<button class="chip-button" onclick="selectSymptom('🤧 Cough')" style="background-color:#0a9396; color:white; border:none; border-radius:16px; padding:6px 12px; cursor:pointer;">🤧 Cough</button>
-<button class="chip-button" onclick="selectSymptom('😴 Fatigue')" style="background-color:#ee9b00; color:white; border:none; border-radius:16px; padding:6px 12px; cursor:pointer;">😴 Fatigue</button>
-<button class="chip-button" onclick="selectSymptom('🤢 Nausea')" style="background-color:#3a0ca3; color:white; border:none; border-radius:16px; padding:6px 12px; cursor:pointer;">🤢 Nausea</button>
-</div>
 <form id="chat-form">
 <input autocomplete="off" id="user-input" placeholder="Describe your symptoms..." required="" type="text"/>
 <button type="submit">Send</button>
 <div class="spinner" id="spinner">⏳</div>
 </form>
-<div class="bottom-controls"><button onclick="clearChat()">Clear Chat</button><button onclick="toggleDarkMode()">Toggle Dark Mode</button><button onclick="exportChat()">Export Chat</button></div>
+<div class="bottom-controls"><button onclick="clearChat()">Clear Chat</button><button onclick="exportChat()">Export Chat</button></div>
 <script>
     const chat = document.getElementById('chat');
     const form = document.getElementById('chat-form');
